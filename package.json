@@ -1,0 +1,44 @@
+{
+  "name": "hubspot-gdpr-reconsent-engine",
+  "version": "1.0.0",
+  "description": "HubSpot app that automates GDPR/CCPA compliance: consent audits, re-consent sequencing, 24-month inactivity purges, and contact-level consent coverage dashboards.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "test": "jest --coverage",
+    "test:watch": "jest --watch",
+    "lint": "tsc --noEmit"
+  },
+  "keywords": [
+    "hubspot",
+    "gdpr",
+    "ccpa",
+    "compliance",
+    "consent"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hubspot/api-client": "^13.4.0",
+    "axios": "^1.13.2",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "node-cron": "^4.2.1",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.5",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.10.1",
+    "@types/node-cron": "^3.0.11",
+    "@types/supertest": "^6.0.3",
+    "@types/uuid": "^10.0.0",
+    "jest": "^30.2.0",
+    "supertest": "^7.1.4",
+    "ts-jest": "^29.4.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
