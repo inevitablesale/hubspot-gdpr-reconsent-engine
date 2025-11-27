@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import type { Request, Response } from 'express';
 import { requireAuth } from '../middleware/auth';
+import { sensitiveRateLimiter } from '../middleware/rateLimiter';
 import { inactivityService } from '../services/inactivityService';
 import { reconsentWorkflowService } from '../services/reconsentWorkflowService';
 import { purgeService } from '../services/purgeService';
@@ -212,7 +213,7 @@ router.post('/reconsent/process/:contactId', requireAuth, async (req: Request, r
  * POST /workflow/purge/execute
  * Execute scheduled purges
  */
-router.post('/purge/execute', requireAuth, async (req: Request, res: Response): Promise<void> => {
+router.post('/purge/execute', sensitiveRateLimiter, requireAuth, async (req: Request, res: Response): Promise<void> => {
   try {
     const result = await purgeService.executeScheduledPurges();
     res.json({
@@ -319,7 +320,7 @@ router.delete('/purge/cancel/:contactId', requireAuth, async (req: Request, res:
  * DELETE /workflow/purge/gdpr-request
  * Process GDPR deletion request
  */
-router.delete('/purge/gdpr-request', requireAuth, async (req: Request, res: Response): Promise<void> => {
+router.delete('/purge/gdpr-request', sensitiveRateLimiter, requireAuth, async (req: Request, res: Response): Promise<void> => {
   try {
     const { email } = req.body as { email?: string };
 
@@ -343,7 +344,7 @@ router.delete('/purge/gdpr-request', requireAuth, async (req: Request, res: Resp
  * DELETE /workflow/purge/ccpa-request
  * Process CCPA deletion request
  */
-router.delete('/purge/ccpa-request', requireAuth, async (req: Request, res: Response): Promise<void> => {
+router.delete('/purge/ccpa-request', sensitiveRateLimiter, requireAuth, async (req: Request, res: Response): Promise<void> => {
   try {
     const { email } = req.body as { email?: string };
 

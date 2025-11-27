@@ -173,4 +173,5 @@ export interface AppConfig {
   consentExpiryMonths: number;
   inactivityThresholdMonths: number;
   purgeGracePeriodDays: number;
+  auditLogMaxRecords: number;
 }

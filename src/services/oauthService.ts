@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { config } from '../utils/config';
+import { config, validateOAuthConfig } from '../utils/config';
 import type { OAuthTokens } from '../types';
 import type { HubSpotOAuthTokenResponse } from '../types/hubspot';
 
@@ -15,6 +15,8 @@ export class OAuthService {
    * Generate the authorization URL for OAuth flow
    */
   getAuthorizationUrl(state?: string): string {
+    validateOAuthConfig();
+    
     const params = new URLSearchParams({
       client_id: config.hubspotClientId,
       redirect_uri: config.hubspotRedirectUri,
@@ -32,6 +34,8 @@ export class OAuthService {
    * Exchange authorization code for access and refresh tokens
    */
   async exchangeCodeForTokens(code: string): Promise<OAuthTokens> {
+    validateOAuthConfig();
+    
     const response = await axios.post<HubSpotOAuthTokenResponse>(
       `${HUBSPOT_OAUTH_BASE}/token`,
       new URLSearchParams({
@@ -56,6 +60,8 @@ export class OAuthService {
    * Refresh the access token using the refresh token
    */
   async refreshAccessToken(refreshToken?: string): Promise<OAuthTokens> {
+    validateOAuthConfig();
+    
     const tokenToUse = refreshToken || this.tokens?.refreshToken;
     
     if (!tokenToUse) {

@@ -228,8 +228,9 @@ export class TimelineEventService {
     expiryDate: Date,
     categories: string[]
   ): Promise<void> {
+    const dateStr = expiryDate.toISOString().split('T')[0];
     await this.createTimelineEvent('consent_renewed', contactId, {
-      expiry_date: expiryDate.toISOString().split('T')[0] || '',
+      expiry_date: dateStr ?? '',
       categories: categories.join(', ')
     });
   }
@@ -241,8 +242,9 @@ export class TimelineEventService {
     contactId: string,
     originalConsentDate: Date
   ): Promise<void> {
+    const dateStr = originalConsentDate.toISOString().split('T')[0];
     await this.createTimelineEvent('consent_expired', contactId, {
-      original_consent_date: originalConsentDate.toISOString().split('T')[0] || ''
+      original_consent_date: dateStr ?? ''
     });
   }
 
@@ -268,8 +270,9 @@ export class TimelineEventService {
     purgeDate: Date,
     reason: string
   ): Promise<void> {
+    const dateStr = purgeDate.toISOString().split('T')[0];
     await this.createTimelineEvent('purge_scheduled', contactId, {
-      purge_date: purgeDate.toISOString().split('T')[0] || '',
+      purge_date: dateStr ?? '',
       reason
     });
   }

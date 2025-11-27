@@ -32,7 +32,8 @@ export const config: AppConfig = {
   ],
   consentExpiryMonths: getEnvNumber('CONSENT_EXPIRY_MONTHS', 24),
   inactivityThresholdMonths: getEnvNumber('INACTIVITY_THRESHOLD_MONTHS', 24),
-  purgeGracePeriodDays: getEnvNumber('PURGE_GRACE_PERIOD_DAYS', 30)
+  purgeGracePeriodDays: getEnvNumber('PURGE_GRACE_PERIOD_DAYS', 30),
+  auditLogMaxRecords: getEnvNumber('AUDIT_LOG_MAX_RECORDS', 100)
 };
 
 export const PORT = getEnvNumber('PORT', 3000);
@@ -40,4 +41,17 @@ export const NODE_ENV = process.env['NODE_ENV'] || 'development';
 
 export function isProduction(): boolean {
   return NODE_ENV === 'production';
+}
+
+/**
+ * Validate OAuth configuration before OAuth operations
+ * @throws Error if OAuth credentials are missing
+ */
+export function validateOAuthConfig(): void {
+  if (!config.hubspotClientId) {
+    throw new Error('HUBSPOT_CLIENT_ID environment variable is required for OAuth');
+  }
+  if (!config.hubspotClientSecret) {
+    throw new Error('HUBSPOT_CLIENT_SECRET environment variable is required for OAuth');
+  }
 }

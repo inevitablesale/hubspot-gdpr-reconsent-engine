@@ -5,7 +5,7 @@ import type {
   ConsentAction, 
   ConsentSource 
 } from '../types/consent';
-import { formatForHubSpot } from '../utils/dateUtils';
+import { config } from '../utils/config';
 
 /**
  * Service for auditing consent changes
@@ -124,9 +124,10 @@ export class ConsentAuditService {
         timestamp: newRecord.timestamp
       });
 
-      // Keep only the last 100 records to avoid property size limits
-      if (existingLog.length > 100) {
-        existingLog = existingLog.slice(-100);
+      // Keep only the last N records to avoid property size limits
+      const maxRecords = config.auditLogMaxRecords;
+      if (existingLog.length > maxRecords) {
+        existingLog = existingLog.slice(-maxRecords);
       }
 
       // Update HubSpot

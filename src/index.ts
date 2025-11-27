@@ -9,7 +9,10 @@ import {
 import { 
   errorHandler, 
   notFoundHandler, 
-  requestLogger 
+  requestLogger,
+  apiRateLimiter,
+  authRateLimiter,
+  sensitiveRateLimiter
 } from './middleware';
 import { schedulerService } from './services/schedulerService';
 
@@ -20,7 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(requestLogger);
 
-// Health check
+// Health check (no rate limit)
 app.get('/health', (req, res) => {
   res.json({
     status: 'healthy',
@@ -29,11 +32,11 @@ app.get('/health', (req, res) => {
   });
 });
 
-// API Routes
-app.use('/oauth', oauthRoutes);
-app.use('/consent', consentRoutes);
-app.use('/workflow', workflowRoutes);
-app.use('/dashboard', dashboardRoutes);
+// API Routes with rate limiting
+app.use('/oauth', authRateLimiter, oauthRoutes);
+app.use('/consent', apiRateLimiter, consentRoutes);
+app.use('/workflow', apiRateLimiter, workflowRoutes);
+app.use('/dashboard', apiRateLimiter, dashboardRoutes);
 
 // API documentation route
 app.get('/api', (req, res) => {
